@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A0A0A">
+<title>DevilXit DASHBOARD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2196F3; --blue-lite:#42A5F5; --blue-dark:#1976D2;
+  --bg:#0A0A0A; --card:#141414; --card2:#18181c; --border:#333333; --border-light:#26262b;
+  --muted:#888888; --text:#FFFFFF; --text-dim:#9a9aa4; --text-muted:#555560;
+  --success:#00E676; --success-bg:rgba(0,230,118,.08);
+  --error:#FF1744; --error-bg:rgba(255,23,68,.08);
+  --warning:#FFD600; --warning-bg:rgba(255,214,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
+  font-family:'Cairo',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
+html,body{min-height:100%;}
+body{
+  background:var(--bg);color:var(--text);
+  font-size:14px;line-height:1.55;
+  display:flex;justify-content:center;align-items:flex-start;
+  min-height:100dvh;overflow-x:hidden;position:relative;
+  padding:0;
+}
+body::before{
+  content:"";position:fixed;inset:-20%;
+  background:radial-gradient(circle at 50% 0%, rgba(33,150,243,.20), transparent 55%),
+             radial-gradient(circle at 50% 100%, rgba(33,150,243,.10), transparent 50%);
+  pointer-events:none;animation:glowPulse 7s ease-in-out infinite;z-index:0;
+}
+body::after{
+  content:"";position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(circle at 50% 40%, #000 0%, transparent 72%);
+  mask-image:radial-gradient(circle at 50% 40%, #000 0%, transparent 72%);
+  pointer-events:none;z-index:0;
+}
+@keyframes glowPulse{0%,100%{opacity:.85}50%{opacity:1}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.app{
+  position:relative;z-index:1;width:100%;max-width:420px;
+  min-height:100dvh;padding:22px 18px 28px;
+  display:flex;flex-direction:column;
+}
+
+/* ===== Brand ===== */
+.brand{text-align:center;user-select:none;}
+.brand-tag{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  font-size:.6rem;font-weight:900;letter-spacing:3px;color:var(--blue-lite);
+  border:1px solid rgba(33,150,243,.45);background:rgba(33,150,243,.10);
+  padding:6px 14px;border-radius:100px;margin-bottom:18px;text-transform:uppercase;
+}
+.brand-tag svg{width:13px;height:13px;color:var(--blue-lite);filter:drop-shadow(0 0 5px rgba(33,150,243,.9));}
+.logo{font-weight:900;font-style:italic;text-transform:uppercase;line-height:.95;transform:skewX(-8deg);display:inline-block;}
+.logo .l1{display:block;font-size:2.6rem;letter-spacing:1px;color:#fff;
+  text-shadow:3px 3px 0 #000, 0 0 30px rgba(255,255,255,.18);}
+.logo .l2{display:block;font-size:.95rem;letter-spacing:5px;padding-left:5px;margin-top:6px;
+  color:var(--blue);text-shadow:2px 2px 0 #000, 0 0 20px rgba(33,150,243,.75);}
+.brand-line{width:64px;height:3px;margin:16px auto 0;border-radius:3px;
+  background:linear-gradient(90deg, transparent, var(--blue), transparent);
+  box-shadow:0 0 14px rgba(33,150,243,.8);}
+.subtitle{text-align:center;color:var(--muted);font-size:.63rem;font-weight:700;
+  letter-spacing:2.2px;text-transform:uppercase;margin-top:14px;line-height:1.8;}
+
+/* ===== Login view ===== */
+#loginView{
+  min-height:100dvh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:0;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;
+}
+#loginView .brand{margin-bottom:32px;}
+
+/* ===== Inputs ===== */
+.input-group{margin-bottom:16px;}
+.input-label{display:block;color:var(--blue);font-size:.65rem;font-weight:900;
+  letter-spacing:2.5px;margin-bottom:10px;text-transform:uppercase;}
+.input-wrapper{
+  display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1.5px solid var(--border);border-radius:15px;padding:0 16px;
+  transition:border-color .25s, box-shadow .25s, background .25s;
+}
+.input-wrapper:focus-within{
+  border-color:var(--blue);background:#131317;
+  box-shadow:0 0 0 4px rgba(33,150,243,.14), 0 0 24px rgba(33,150,243,.28);
+}
+.input-icon{display:flex;align-items:center;justify-content:center;color:var(--blue);opacity:.9;flex:none;}
+.input-icon svg{width:18px;height:18px;filter:drop-shadow(0 0 6px rgba(33,150,243,.55));}
+.input-wrapper input{
+  flex:1;background:transparent;border:none;outline:none;color:#fff;
+  padding:16px 0;font-size:.9rem;font-weight:800;letter-spacing:1.5px;
+  min-width:0;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.input-wrapper input::placeholder{color:#4a4a52;font-weight:600;letter-spacing:1.2px;
+  font-family:'Cairo',-apple-system,sans-serif;}
+.input-wrapper input[type="password"]{letter-spacing:4px;}
+
+/* ===== Buttons ===== */
+.btn{
+  position:relative;overflow:hidden;width:100%;padding:16px;border:none;border-radius:15px;
+  font-family:inherit;font-size:.9rem;font-weight:900;letter-spacing:2.2px;
+  text-transform:uppercase;color:#fff;cursor:pointer;
+  transition:transform .15s, box-shadow .25s, filter .25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn:active{transform:scale(.975);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn svg{width:18px;height:18px;}
+.btn-blue{
+  background:linear-gradient(135deg,#42A5F5 0%, #2196F3 55%, #1565C0 100%);
+  box-shadow:0 10px 28px rgba(33,150,243,.35), inset 0 1px 0 rgba(255,255,255,.28);
+}
+.btn-blue::after{
+  content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite;
+}
+@keyframes shine{0%{left:-60%;}55%,100%{left:135%;}}
+
+.btn-sm{padding:10px 14px;font-size:.7rem;letter-spacing:1.6px;border-radius:11px;width:auto;}
+.btn-danger{
+  background:linear-gradient(135deg,#FF4B5C,#D50000);
+  box-shadow:0 6px 18px rgba(255,23,68,.35), inset 0 1px 0 rgba(255,255,255,.22);
+}
+.btn-ghost{
+  background:var(--card2);border:1px solid var(--border);color:var(--text-dim);
+  box-shadow:none;
+}
+.btn-ghost:hover{border-color:var(--blue);color:#fff;}
+
+/* ===== Error msg ===== */
+.err{color:var(--error);font-size:.72rem;margin-top:12px;min-height:18px;font-weight:800;letter-spacing:.5px;text-align:center;}
+.admin-link{
+  color:var(--blue);text-decoration:none;font-size:.68rem;margin-top:16px;
+  display:inline-flex;align-items:center;gap:6px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+}
+.admin-link svg{width:14px;height:14px;}
+.admin-link:hover{color:var(--blue-lite);}
+.login-note{margin-top:18px;color:var(--text-muted);font-size:.66rem;letter-spacing:1px;text-align:center;}
+
+/* ===== Header (dashboard) ===== */
+.app-header{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;margin-bottom:22px;flex:none;
+  animation:fadeUp .4s ease both;
+}
+.app-header .brand{text-align:left;}
+.app-header .logo .l1{font-size:1.45rem;letter-spacing:.5px;}
+.app-header .logo .l2{font-size:.62rem;letter-spacing:4px;margin-top:3px;}
+.role-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:.58rem;font-weight:900;letter-spacing:1.5px;
+  padding:5px 10px;border-radius:100px;text-transform:uppercase;
+  background:rgba(33,150,243,.12);border:1px solid rgba(33,150,243,.4);color:var(--blue-lite);
+}
+.role-badge svg{width:12px;height:12px;}
+.logout-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#17171b;border:1px solid var(--border);color:#b9b9c2;
+  font-family:inherit;font-size:.6rem;font-weight:900;letter-spacing:1.4px;
+  padding:7px 12px;border-radius:100px;cursor:pointer;text-transform:uppercase;
+  transition:transform .15s, border-color .2s, color .2s;text-decoration:none;
+}
+.logout-btn svg{width:13px;height:13px;}
+.logout-btn:active{transform:scale(.94);}
+.logout-btn:hover{border-color:var(--blue);color:#fff;}
+
+/* ===== Content wrap ===== */
+.content{flex:1;display:flex;flex-direction:column;gap:14px;animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;}
+
+/* ===== Cards & Accordions ===== */
+.card{
+  background:linear-gradient(180deg,#151518,#0d0d10);
+  border:1px solid var(--border);border-radius:16px;padding:16px 15px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.card-title{
+  font-size:.65rem;font-weight:900;letter-spacing:2.4px;color:var(--blue);
+  text-transform:uppercase;margin-bottom:13px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.card-title .ct-l{display:flex;align-items:center;gap:8px;}
+.card-title svg{width:16px;height:16px;flex:none;}
+.card-title .ct-r{display:flex;align-items:center;gap:6px;}
+
+.accordion-header {
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 0;
+  transition: color 0.2s;
+}
+.accordion-header:hover { color: var(--blue-lite); }
+.accordion-icon { transition: transform 0.3s ease; }
+.card.collapsed .accordion-content { display: none; }
+.card.collapsed .accordion-icon { transform: rotate(-90deg); }
+.card.collapsed { padding-bottom: 16px; }
+.card.collapsed .card-title { margin-bottom: 0; }
+
+/* ===== Stats ===== */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:0;}
+.stat{
+  background:linear-gradient(180deg,#0f1420,#0b0f18);
+  border:1px solid rgba(33,150,243,.28);border-radius:13px;
+  padding:13px 10px;text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.stat-num{
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:1.35rem;font-weight:900;color:#fff;line-height:1;
+  text-shadow:0 0 14px rgba(33,150,243,.5);
+}
+.stat-lbl{font-size:.55rem;font-weight:700;color:var(--muted);
+  letter-spacing:1.2px;text-transform:uppercase;margin-top:6px;}
+
+/* ===== Price box ===== */
+.price-box{
+  text-align:center;padding:18px 14px;
+  background:rgba(33,150,243,.06);border:1px solid rgba(33,150,243,.28);
+  border-radius:14px;margin-bottom:13px;
+}
+.price-box .lbl{font-size:.58rem;font-weight:900;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.price-box .val{
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:2rem;font-weight:900;color:var(--blue);margin-top:5px;line-height:1;
+  text-shadow:0 0 22px rgba(33,150,243,.55);
+}
+
+/* ===== Forms ===== */
+.form-row{display:flex;flex-direction:column;gap:9px;margin-bottom:0;}
+.field{
+  width:100%;padding:13px 15px;background:var(--card2);
+  border:1.5px solid var(--border);border-radius:12px;color:#fff;
+  font-size:.82rem;font-weight:700;outline:none;font-family:'Cairo',sans-serif;
+  transition:border-color .25s, box-shadow .25s, background .25s;
+}
+.field:focus{border-color:var(--blue);background:#131317;
+  box-shadow:0 0 0 3px rgba(33,150,243,.14);}
+.field::placeholder{color:#4a4a52;font-weight:600;}
+.field[type="number"]{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;letter-spacing:.5px;}
+select.field{cursor:pointer;background-image:none;}
+
+/* ===== Duration grid ===== */
+.duration-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+.dur-item{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:10px 13px;background:var(--card2);
+  border:1.5px solid var(--border);border-radius:11px;
+  transition:border-color .2s;
+}
+.dur-item:focus-within{border-color:var(--blue);}
+.dur-item label{color:var(--text-dim);font-size:.74rem;font-weight:700;flex:1;letter-spacing:.3px;}
+.dur-item input{
+  width:80px;padding:7px 9px;background:var(--bg);
+  border:1px solid var(--border);border-radius:8px;color:var(--blue);
+  text-align:center;font-size:.8rem;font-weight:900;font-family:ui-monospace,monospace;outline:none;
+}
+.dur-item input:focus{border-color:var(--blue);}
+
+/* ===== Balance/code hero ===== */
+.hero{text-align:center;padding:6px 0 2px;}
+.hero-lbl{color:var(--muted);font-size:.6rem;letter-spacing:2.2px;text-transform:uppercase;font-weight:900;}
+.hero-code{
+  font-size:1.55rem;font-weight:900;color:var(--blue);
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing:2px;margin:8px 0 2px;word-break:break-all;
+  text-shadow:0 0 20px rgba(33,150,243,.55);
+}
+.hero-balance{
+  font-size:2.6rem;font-weight:900;color:var(--success);
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  margin:4px 0;line-height:1;letter-spacing:0;
+  text-shadow:0 0 26px rgba(0,230,118,.45);
+}
+.hero-sub{color:var(--muted);font-size:.72rem;margin-top:4px;letter-spacing:.5px;}
+.hero-sub b{color:var(--blue);font-weight:900;}
+
+/* ===== Messages ===== */
+.msg{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:13px 15px;border-radius:12px;font-size:.76rem;
+  font-weight:700;letter-spacing:.3px;margin-bottom:12px;line-height:1.55;
+}
+.msg svg{width:17px;height:17px;flex:none;margin-top:1px;}
+.msg.success{background:var(--success-bg);border:1px solid rgba(0,230,118,.4);color:var(--success);}
+.msg.error{background:var(--error-bg);border:1px solid rgba(255,23,68,.4);color:var(--error);}
+.msg.info{background:rgba(33,150,243,.08);border:1px solid rgba(33,150,243,.35);color:var(--blue-lite);}
+
+/* ===== New keys list ===== */
+.new-key-row{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;padding:9px 11px;background:var(--card2);border-radius:9px;
+  margin-bottom:6px;border:1px solid var(--border);
+}
+.new-key-row span{
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color:var(--success);font-size:.72rem;letter-spacing:.8px;font-weight:800;
+  word-break:break-all;
+}
+.mini-btn{
+  flex:none;width:32px;height:32px;display:grid;place-items:center;
+  background:rgba(33,150,243,.12);border:1px solid rgba(33,150,243,.35);
+  border-radius:9px;color:var(--blue-lite);cursor:pointer;
+  transition:all .18s;
+}
+.mini-btn:active{transform:scale(.9);}
+.mini-btn:hover{background:rgba(33,150,243,.22);color:#fff;}
+.mini-btn svg{width:15px;height:15px;}
+.mini-btn.warn{background:rgba(255,214,0,.1);border-color:rgba(255,214,0,.35);color:var(--warning);}
+.mini-btn.warn:hover{background:rgba(255,214,0,.22);}
+.mini-btn.danger{background:rgba(255,23,68,.1);border-color:rgba(255,23,68,.35);color:var(--error);}
+.mini-btn.danger:hover{background:rgba(255,23,68,.22);}
+
+/* ===== Table ===== */
+.table-wrap{
+  max-height:430px;overflow-y:auto;border-radius:12px;
+  border:1px solid var(--border);background:var(--bg);
+}
+table{width:100%;border-collapse:collapse;font-size:.7rem;}
+th{
+  background:var(--card2);padding:11px 8px;text-align:left;
+  color:var(--blue);border-bottom:1px solid var(--border);
+  font-weight:900;font-size:.56rem;letter-spacing:1.2px;
+  text-transform:uppercase;position:sticky;top:0;z-index:1;
+}
+td{padding:9px 8px;border-bottom:1px solid var(--border-light);color:#e6e6ea;vertical-align:middle;}
+tr:hover td{background:var(--card2);}
+.key-cell{
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.65rem;color:var(--blue-lite);font-weight:800;
+  letter-spacing:.3px;word-break:break-all;
+}
+.dur-cell{font-size:.66rem;color:var(--blue);font-weight:800;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+
+.badge{
+  display:inline-block;padding:3px 9px;border-radius:100px;
+  font-size:.55rem;font-weight:900;letter-spacing:.5px;text-transform:uppercase;
+}
+.badge-green{background:rgba(0,230,118,.14);color:var(--success);border:1px solid rgba(0,230,118,.35);}
+.badge-blue{background:rgba(33,150,243,.14);color:var(--blue-lite);border:1px solid rgba(33,150,243,.35);}
+.badge-red{background:rgba(255,23,68,.14);color:var(--error);border:1px solid rgba(255,23,68,.35);}
+
+.empty{
+  text-align:center;color:var(--text-muted);padding:34px 20px;
+  font-size:.75rem;font-weight:700;letter-spacing:1px;
+}
+.empty svg{width:34px;height:34px;opacity:.35;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--card);border:1px solid var(--blue);color:#fff;
+  padding:11px 20px;border-radius:12px;font-size:.75rem;font-weight:800;
+  z-index:9999;opacity:0;transition:all .3s;pointer-events:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.6), 0 0 20px rgba(33,150,243,.25);
+  max-width:88%;text-align:center;letter-spacing:.3px;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== Counts ===== */
+.keys-count-row{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card2);padding:6px 13px;border-radius:12px;
+  border:1.5px solid var(--border);transition:border-color .2s;
+}
+.keys-count-row:focus-within{border-color:var(--blue);}
+.keys-count-row label{color:var(--blue);font-size:.72rem;font-weight:900;letter-spacing:1.2px;white-space:nowrap;text-transform:uppercase;}
+.keys-count-row input{
+  flex:1;padding:9px;background:transparent;border:0;color:#fff;
+  font-size:1rem;text-align:center;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight:900;outline:none;min-width:0;
+}
+
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:.8rem;letter-spacing:1px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px) scale(.99);}to{opacity:1;transform:none;}}
+
+/* hide number spinners */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+input[type=number]{-moz-appearance:textfield;appearance:textfield;}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// ===== Config =====
+// ============================================================
+const PROXY_URL = 'https://devilxit--f5db6daad50711f1bcb71607ee4eb77e.web.val.run';
+const KEYS_PATH = 'keys';
+
+// ============================================================
+// ===== State =====
+// ============================================================
+const state = {
+  token: null,
+  tokenExpiry: 0,
+  isAdmin: false,
+  isReseller: false,
+  resellerCode: null,
+  showAdminLogin: false,
+  loginError: '',
+  adminMessage: null,
+  adminMessageType: 'success',
+  resetMessage: null,
+  resetMessageType: 'success',
+  error: null,
+  keyCreated: false,
+  newKeysList: [],
+  record: null,
+  myKeys: {},
+  balance: 0,
+  totalCreated: 0,
+  keyVisible: false,
+  currentTab: 'login',
+};
+
+// استرجاع الجلسة من sessionStorage
+function loadSession() {
+  try {
+    const s = sessionStorage.getItem('devilxit_session');
+    if (s) {
+      const data = JSON.parse(s);
+      if (data.adminLoggedIn) state.isAdmin = true;
+      if (data.resellerCode) {
+        state.isReseller = true;
+        state.resellerCode = data.resellerCode;
+      }
+    }
+  } catch (e) {}
+}
+function saveSession() {
+  try {
+    sessionStorage.setItem('devilxit_session', JSON.stringify({
+      adminLoggedIn: state.isAdmin,
+      resellerCode: state.resellerCode,
+    }));
+  } catch (e) {}
+}
+function clearSession() {
+  sessionStorage.removeItem('devilxit_session');
+}
+
+// ============================================================
+// ===== Token management =====
+// ============================================================
+async function getProxyToken() {
+  const now = Date.now();
+  if (state.token && now < state.tokenExpiry - 10000) {
+    return state.token;
+  }
+  try {
+    const res = await fetch(PROXY_URL + '/auth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ deviceId: 'web_dashboard' }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.token) return null;
+    state.token = data.token;
+    // التوكن صالح 60 ثانية، نخزنه 50 ثانية
+    state.tokenExpiry = now + 50000;
+    return data.token;
+  } catch (e) {
+    return null;
+  }
+}
+
+// ============================================================
+// ===== API helpers =====
+// ============================================================
+async function sendRequest(method, url, body = null, token = null) {
+  if (token === null) token = await getProxyToken();
+  if (token === null) return { ok: false, code: 0, response: 'Failed to get token' };
+
+  let actualMethod = method;
+  const headers = { 'Authorization': 'Bearer ' + token };
+  if (method === 'PUT') {
+    actualMethod = 'POST';
+    headers['X-HTTP-Method-Override'] = 'PUT';
+  } else if (method === 'DELETE') {
+    actualMethod = 'POST';
+    headers['X-HTTP-Method-Override'] = 'DELETE';
+  }
+  if (body !== null) headers['Content-Type'] = 'application/json';
+
+  try {
+    const res = await fetch(url, {
+      method: actualMethod,
+      headers,
+      body: body,
+    });
+    const text = await res.text();
+    return { ok: res.status === 200, code: res.status, response: text };
+  } catch (e) {
+    return { ok: false, code: 0, response: 'Network error: ' + e.message };
+  }
+}
+
+async function fetchGistData() {
+  const r = await sendRequest('GET', PROXY_URL + '/.json?_t=' + Date.now());
+  if (!r.ok || !r.response) return null;
+  let result;
+  try { result = JSON.parse(r.response); } catch (e) { return null; }
+  if (!result || typeof result !== 'object') result = {};
+  if (!result.resellers) result.resellers = {};
+  if (!result.keys) result.keys = {};
+  if (!result.key_price) result.key_price = 1;
+  if (!result.key_prices || Object.keys(result.key_prices).length === 0) {
+    result.key_prices = {
+      '3600': 0.5, '10800': 1, '21600': 1.5, '43200': 2,
+      '86400': 2.5, '259200': 3.5, '604800': 4.5,
+      '1296000': 6, '2592000': 8
+    };
+  }
+  return result;
+}
+
+async function fbGet(path) {
+  const r = await sendRequest('GET', PROXY_URL + '/' + path + '.json?_t=' + Date.now());
+  if (!r.ok || !r.response) return null;
+  try {
+    const j = JSON.parse(r.response);
+    return (j && typeof j === 'object') ? j : null;
+  } catch (e) { return null; }
+}
+
+async function fbPut(path, data) {
+  const json = JSON.stringify(data);
+  const token = await getProxyToken();
+  if (!token) return false;
+  const r = await sendRequest('PUT', PROXY_URL + '/' + path + '.json', json, token);
+  if (!r.ok) {
+    // retry with fresh token
+    const newToken = await getProxyToken();
+    if (newToken && newToken !== token) {
+      const r2 = await sendRequest('PUT', PROXY_URL + '/' + path + '.json', json, newToken);
+      return r2.ok;
+    }
+  }
+  return r.ok;
+}
+
+async function fbDelete(path) {
+  const r = await sendRequest('DELETE', PROXY_URL + '/' + path + '.json');
+  return r.ok;
+}
+
+async function updateGistData(record) {
+  const token = await getProxyToken();
+  if (!token) return false;
+  let allOk = true;
+  if (record.resellers) {
+    const r = await sendRequest('PUT', PROXY_URL + '/resellers.json', JSON.stringify(record.resellers), token);
+    if (!r.ok) allOk = false;
+  }
+  if (record.key_prices) {
+    const r = await sendRequest('PUT', PROXY_URL + '/key_prices.json', JSON.stringify(record.key_prices), token);
+    if (!r.ok) allOk = false;
+  }
+  if (record.key_price) {
+    const r = await sendRequest('PUT', PROXY_URL + '/key_price.json', JSON.stringify(record.key_price), token);
+    if (!r.ok) allOk = false;
+  }
+  return allOk;
+}
+
+// ============================================================
+// ===== Helpers =====
+// ============================================================
+function formatTime(seconds) {
+  if (seconds <= 0) return 'Expired';
+  seconds = Math.floor(seconds);
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  const p = [];
+  if (d > 0) p.push(d + 'd');
+  if (h > 0) p.push(h + 'h');
+  if (m > 0) p.push(m + 'm');
+  if (s > 0 || p.length === 0) p.push(s + 's');
+  return p.join(' ');
+}
+
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function numFmt(n, decimals = 2) {
+  return Number(n || 0).toFixed(decimals);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function copyKey(key) {
+  if (!key) return;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(key).then(() => showToast('Key copied')).catch(fallback);
+  } else fallback();
+    function fallback() {
+    const ta = document.createElement('textarea');
+    ta.value = key; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('Key copied'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+}
+
+function toggleCard(el) {
+  const card = el.closest('.card');
+  if (card) card.classList.toggle('collapsed');
+}
+
+function toggleSelectAllResellers(cb) {
+  document.querySelectorAll('.reseller-checkbox').forEach(x => x.checked = cb.checked);
+}
+
+// ============================================================
+// ===== Duration options =====
+// ============================================================
+const durationOptions = {
+  '3600': '1 Hour', '10800': '3 Hours', '21600': '6 Hours',
+  '43200': '12 Hours', '86400': '24 Hours', '259200': '3 Days',
+  '604800': '7 Days', '1296000': '15 Days', '2592000': '30 Days'
+};
+
+// ============================================================
+// ===== View: Login (Reseller) =====
+// ============================================================
+function renderLoginView() {
+  return `
+  <div class="app" id="loginView">
+    <div class="brand">
+      <div class="brand-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>
+        </svg>
+        Reseller Access
+      </div>
+      <h1 class="logo">
+        <span class="l1">DevilXit</span>
+        <span class="l2">DASHBOARD</span>
+      </h1>
+      <div class="brand-line"></div>
+      <p class="subtitle">Enter Your Reseller Code<br>To Access The Panel</p>
+    </div>
+
+    <form id="resellerLoginForm">
+      <div class="input-group">
+        <label class="input-label" for="rcode">Reseller Code</label>
+        <div class="input-wrapper">
+          <span class="input-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="4"/>
+              <path d="M11 11l10 10M17 17l3-3M14 14l3-3"/>
+            </svg>
+          </span>
+          <input type="text" id="rcode" name="reseller_code" placeholder="ENTER RESELLER CODE" required autocomplete="off" autocapitalize="characters" spellcheck="false">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <path d="M10 17l5-5-5-5M15 12H3"/>
+        </svg>
+        UNLOCK
+      </button>
+    </form>
+
+    <div class="err" id="loginErr">${esc(state.loginError || '')}</div>
+    <p class="login-note">No key? Contact your seller.</p>
+    <div style="text-align:center;">
+      <a class="admin-link" href="#" id="adminAccessLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>
+        </svg>
+        Admin Access
+      </a>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// ===== View: Admin Login =====
+// ============================================================
+function renderAdminLoginView() {
+  return `
+  <div class="app" id="loginView">
+    <div class="brand">
+      <div class="brand-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        Admin Access
+      </div>
+      <h1 class="logo">
+        <span class="l1">DevilXit</span>
+        <span class="l2">DASHBOARD</span>
+      </h1>
+      <div class="brand-line"></div>
+      <p class="subtitle">Restricted Area<br>Authorized Personnel Only</p>
+    </div>
+
+    <form id="adminLoginForm">
+      <div class="input-group">
+        <label class="input-label" for="apass">Admin Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <input type="password" id="apass" name="admin_password" placeholder="ENTER ADMIN PASSWORD" required autocomplete="off">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <path d="M10 17l5-5-5-5M15 12H3"/>
+        </svg>
+        LOGIN
+      </button>
+    </form>
+
+    <div class="err" id="loginErr">${esc(state.loginError || '')}</div>
+    <div style="text-align:center;">
+      <a class="admin-link" href="#" id="backToResellerLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Reseller Login
+      </a>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// ===== View: Dashboard =====
+// ============================================================
+function renderDashboard() {
+  const resellers = state.record?.resellers || {};
+  const keyPrice = state.record?.key_price ?? 1;
+  const keyPrices = state.record?.key_prices || {};
+
+  let html = `<div class="app">
+    <div class="app-header">
+      <div>
+        <div class="brand">
+          <h1 class="logo">
+            <span class="l1">DevilXit</span>
+            <span class="l2">DASHBOARD</span>
+          </h1>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span class="role-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            ${state.isAdmin
+              ? '<path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/>'
+              : '<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/>'}
+          </svg>
+          ${state.isAdmin ? 'ADMIN' : 'RESELLER'}
+        </span>
+        <button class="logout-btn" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/>
+            <path d="M10 17l-5-5 5-5M5 12h11"/>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="content">`;
+
+  // Messages
+  if (state.adminMessage) {
+    html += renderMsg(state.adminMessage, state.adminMessageType);
+  }
+  if (state.resetMessage) {
+    html += renderMsg(state.resetMessage, state.resetMessageType);
+  }
+
+  // ===== ADMIN VIEW =====
+  if (state.isAdmin) {
+    const totalKeys = Object.values(resellers).reduce((s, r) => s + Number(r.total_created || 0), 0);
+    const totalBalance = Object.values(resellers).reduce((s, r) => s + Number(r.balance || 0), 0);
+
+    html += `
+      <div class="stats">
+        <div class="stat"><div class="stat-num">${Object.keys(resellers).length}</div><div class="stat-lbl">Resellers</div></div>
+        <div class="stat"><div class="stat-num">${totalKeys}</div><div class="stat-lbl">Keys</div></div>
+        <div class="stat"><div class="stat-num">${numFmt(totalBalance)}</div><div class="stat-lbl">Balance</div></div>
+        <div class="stat"><div class="stat-num">${numFmt(keyPrice)}</div><div class="stat-lbl">Price</div></div>
+      </div>
+
+      <!-- Key Price -->
+      <div class="card">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"/>
+              <circle cx="7" cy="7" r="1.5"/>
+            </svg>
+            Key Price
+          </span>
+          <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content">
+          <div class="price-box" style="margin-top:10px;">
+            <div class="lbl">Current Price</div>
+            <div class="val">${numFmt(keyPrice)}</div>
+          </div>
+          <form id="updatePriceForm">
+            <div class="form-row">
+              <input type="number" step="0.01" name="key_price" class="field" placeholder="New price" value="${keyPrice}" min="0.01" required>
+              <button type="submit" class="btn btn-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/>
+                  <path d="M17 21v-8H7v8M7 3v5h8"/>
+                </svg>
+                Update Price
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Duration Prices -->
+      <div class="card collapsed">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            Duration Prices
+          </span>
+          <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          <form id="updateKeyPricesForm">
+            <div class="duration-grid">
+              ${Object.keys(durationOptions).map(sec => `
+                <div class="dur-item">
+                  <label>${durationOptions[sec]}</label>
+                  <input type="number" step="0.01" name="price_${sec}" value="${numFmt(keyPrices[sec] ?? 1)}" min="0">
+                </div>
+              `).join('')}
+            </div>
+            <button type="submit" class="btn btn-blue" style="margin-top:13px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/>
+                <path d="M17 21v-8H7v8M7 3v5h8"/>
+              </svg>
+              Save Prices
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Add Reseller -->
+      <div class="card collapsed">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
+            </svg>
+            Add Reseller
+          </span>
+          <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          <form id="addResellerForm">
+            <div class="form-row">
+              <input type="text" name="code" class="field" placeholder="Reseller code" required autocomplete="off">
+              <input type="number" step="0.01" name="balance" class="field" placeholder="Balance" value="10" min="0">
+              <button type="submit" class="btn btn-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Add Reseller
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Charge -->
+      <div class="card collapsed">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            Charge Balance
+          </span>
+          <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          <form id="chargeForm">
+            <div class="form-row">
+              <input type="text" name="code" class="field" placeholder="Reseller code" required autocomplete="off">
+              <input type="number" step="0.01" name="amount" class="field" placeholder="Amount" value="10" min="0.01">
+              <button type="submit" class="btn btn-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 19V5M5 12l7-7 7 7"/>
+                </svg>
+                Charge
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Resellers list -->
+      <div class="card">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Resellers
+          </span>
+          <span class="ct-r" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:.6rem;color:var(--muted);letter-spacing:1.2px;font-weight:700;">${Object.keys(resellers).length} total</span>
+            <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          <form id="deleteResellersForm">
+            ${Object.keys(resellers).length > 0 ? `
+              <div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <label style="font-size:0.65rem; color:var(--muted); cursor:pointer; display:flex; align-items:center; gap:5px;">
+                  <input type="checkbox" id="selectAllResellers" onclick="toggleSelectAllResellers(this)"> Select All
+                </label>
+                <button type="submit" class="btn btn-danger btn-sm">Delete Selected</button>
+              </div>` : ''}
+            <div class="table-wrap">
+              <table>
+                <thead><tr>
+                  <th style="width:30px;text-align:center;">#</th>
+                  <th>Code</th><th>Bal</th><th>Keys</th><th></th>
+                </tr></thead>
+                <tbody>
+                  ${Object.keys(resellers).length > 0
+                    ? Object.entries(resellers).map(([code, info]) => `
+                        <tr>
+                          <td style="text-align:center;">
+                            <input type="checkbox" name="selected_resellers[]" value="${esc(code)}" class="reseller-checkbox">
+                          </td>
+                          <td><strong style="font-family:ui-monospace,monospace;color:var(--blue-lite);font-size:.66rem">${esc(code)}</strong></td>
+                          <td style="color:var(--success);font-weight:900;font-family:ui-monospace,monospace;font-size:.72rem">${numFmt(info.balance)}</td>
+                          <td style="font-family:ui-monospace,monospace;font-size:.7rem">${info.total_created || 0}</td>
+                          <td>
+                            <button type="button" class="mini-btn danger" onclick="deleteReseller('${esc(code)}')">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>`).join('')
+                    : '<tr><td colspan="5" class="empty">No resellers yet</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>`;
+  }
+
+  // ===== RESELLER VIEW =====
+  if (state.isReseller) {
+    const myKeys = state.myKeys || {};
+    const balance = state.balance || 0;
+    const totalCreated = state.totalCreated || 0;
+
+    html += `
+      <div class="card">
+        <div class="hero">
+          <div class="hero-lbl">Your Reseller Code</div>
+          <div class="hero-code">${esc(state.resellerCode)}</div>
+          <div style="margin-top:20px;">
+            <div class="hero-lbl">Your Balance</div>
+            <div class="hero-balance">${numFmt(balance)}</div>
+            <div class="hero-sub">Created <b>${totalCreated}</b> keys</div>
+          </div>
+        </div>
+        ${state.error ? `
+          <div class="msg error" style="margin-top:16px;margin-bottom:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+            </svg>
+            <span>${esc(state.error)}</span>
+          </div>` : ''}
+        ${state.keyCreated && state.newKeysList.length > 0 ? `
+          <div class="msg success" style="display:block;margin-top:16px;margin-bottom:0;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              <strong style="font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;">New Keys (${state.newKeysList.length})</strong>
+            </div>
+            ${state.newKeysList.map(k => `
+              <div class="new-key-row">
+                <span>${esc(k)}</span>
+                <button type="button" onclick="copyKey('${esc(k)}')" class="mini-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="12" height="12" rx="2.5"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                </button>
+              </div>`).join('')}
+          </div>` : ''}
+      </div>
+
+      <!-- Generate Keys -->
+      <div class="card collapsed">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="4"/><path d="M11 11l10 10M17 17l3-3M14 14l3-3"/>
+            </svg>
+            Generate Keys
+          </span>
+          <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          <form id="createKeyForm">
+            <div class="form-row">
+              <select name="key_duration" class="field" required>
+                ${Object.keys(durationOptions).map(sec => {
+                  const price = Number(keyPrices[sec] ?? 1);
+                  return `<option value="${sec}" ${balance < price ? 'disabled' : ''}>${durationOptions[sec]} — ${numFmt(price)}</option>`;
+                }).join('')}
+              </select>
+              <div class="keys-count-row">
+                <label>Keys</label>
+                <input type="number" name="keys_count" value="1" min="1" max="50" required>
+              </div>
+              <button type="submit" class="btn btn-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8" cy="8" r="4"/><path d="M11 11l10 10M17 17l3-3M14 14l3-3"/>
+                </svg>
+                Generate Keys
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- My Keys -->
+      <div class="card">
+        <div class="card-title accordion-header" onclick="toggleCard(this)">
+          <span class="ct-l">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3"/>
+            </svg>
+            My Keys
+          </span>
+          <span class="ct-r" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:.6rem;color:var(--muted);letter-spacing:1.2px;font-weight:700;">${Object.keys(myKeys).length}</span>
+            ${Object.keys(myKeys).length > 0 ? `
+              <button type="button" class="mini-btn danger" onclick="deleteAllKeys()" title="Delete all">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>` : ''}
+            <svg class="accordion-icon" style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="accordion-content" style="margin-top:10px;">
+          ${Object.keys(myKeys).length > 0 ? `
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>Key</th><th>Time</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  ${Object.entries(myKeys).map(([key, data], i) => {
+                    const activatedAt = parseInt(data.activated_at || 0);
+                    const expirySecs = parseInt(data.expiry || 0);
+                    const isUsed = !!(data.device_id || (data.device_ids && data.device_ids.length));
+                    let timeLeft = 0;
+                    if (expirySecs > 0) {
+                      if (activatedAt > 0) timeLeft = (activatedAt + expirySecs) - Math.floor(Date.now() / 1000);
+                      else timeLeft = expirySecs;
+                    }
+                    let isExpired = false, expiryLabel = '—', badgeClass = 'badge-blue', status = 'Unused';
+                    if (timeLeft <= 0) {
+                      isExpired = true; expiryLabel = 'Expired'; status = 'Expired'; badgeClass = 'badge-red';
+                    } else {
+                      expiryLabel = formatTime(timeLeft);
+                      if (isUsed) { status = 'Used'; badgeClass = 'badge-green'; }
+                    }
+                    return `
+                      <tr>
+                        <td style="font-family:ui-monospace,monospace;font-size:.65rem;color:var(--text-dim)">${i + 1}</td>
+                        <td><span class="key-cell">${esc(key)}</span></td>
+                        <td><span class="dur-cell">${expiryLabel}</span></td>
+                        <td><span class="badge ${badgeClass}">${status}</span></td>
+                        <td style="white-space:nowrap;">
+                          <button type="button" class="mini-btn" onclick="copyKey('${esc(key)}')" title="Copy">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <rect x="9" y="9" width="12" height="12" rx="2.5"/>
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                          </button>
+                          ${isUsed && !isExpired ? `
+                            <button type="button" class="mini-btn warn" onclick="resetKey('${esc(key)}')" title="Reset">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>
+                              </svg>
+                            </button>` : ''}
+                          <button type="button" class="mini-btn danger" onclick="deleteKey('${esc(key)}')" title="Delete">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>` : `
+            <div class="empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="4"/><path d="M11 11l10 10M17 17l3-3M14 14l3-3"/>
+              </svg>
+              No keys created yet
+            </div>`}
+        </div>
+      </div>`;
+  }
+
+    html += `</div>
+  </div>`;
+  return html;
+}
+
+function renderMsg(text, type) {
+  const isSuccess = type === 'success';
+  return `
+    <div class="msg ${isSuccess ? 'success' : 'error'}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        ${isSuccess
+          ? '<path d="M20 6L9 17l-5-5"/>'
+          : '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>'}
+      </svg>
+      <span>${esc(text)}</span>
+    </div>`;
+}
+
+function renderLoading() {
+  return `<div class="app"><div class="loading">Loading...</div></div>`;
+}
+
+// ============================================================
+// ===== Main render =====
+// ============================================================
+function render() {
+  const app = document.getElementById('app');
+  if (state.isAdmin || state.isReseller) {
+    app.innerHTML = renderDashboard();
+  } else if (state.showAdminLogin) {
+    app.innerHTML = renderAdminLoginView();
+  } else {
+    app.innerHTML = renderLoginView();
+  }
+  bindEvents();
+}
+
+// ============================================================
+// ===== Event binding =====
+// ============================================================
+function bindEvents() {
+  // Login (reseller)
+  const rForm = document.getElementById('resellerLoginForm');
+  if (rForm) {
+    rForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('rcode').value.trim();
+      if (!code) return;
+      state.loginError = '';
+      const record = await fetchGistData();
+      if (!record) {
+        state.loginError = 'Connection failed — try again';
+        document.getElementById('loginErr').textContent = state.loginError;
+        return;
+      }
+      const resellers = record.resellers || {};
+      if (resellers[code]) {
+        state.isReseller = true;
+        state.resellerCode = code;
+        state.record = record;
+        saveSession();
+        await loadResellerData();
+        render();
+      } else {
+        state.loginError = 'Invalid reseller code';
+        document.getElementById('loginErr').textContent = state.loginError;
+      }
+    });
+  }
+
+  // Admin access link
+  const adminLink = document.getElementById('adminAccessLink');
+  if (adminLink) {
+    adminLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      state.showAdminLogin = true;
+      state.loginError = '';
+      render();
+    });
+  }
+
+  // Back to reseller login
+  const backLink = document.getElementById('backToResellerLink');
+  if (backLink) {
+    backLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      state.showAdminLogin = false;
+      state.loginError = '';
+      render();
+    });
+  }
+
+  // Login (admin)
+  const aForm = document.getElementById('adminLoginForm');
+  if (aForm) {
+    aForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const pass = document.getElementById('apass').value;
+      if (pass === '059632096846') {
+        state.isAdmin = true;
+        saveSession();
+        loadAdminData();
+      } else {
+        state.loginError = 'Invalid admin password';
+        document.getElementById('loginErr').textContent = state.loginError;
+      }
+    });
+  }
+
+  // Logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      state.isAdmin = false;
+      state.isReseller = false;
+      state.resellerCode = null;
+      state.record = null;
+      state.myKeys = {};
+      state.showAdminLogin = false;
+      clearSession();
+      render();
+    });
+  }
+
+  // ===== Admin forms =====
+  const updatePriceForm = document.getElementById('updatePriceForm');
+  if (updatePriceForm) {
+    updatePriceForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(updatePriceForm);
+      const newPrice = Math.max(0.01, parseFloat(fd.get('key_price') || 1));
+      const record = await fetchGistData();
+      if (!record) { state.adminMessage = 'Connection failed'; state.adminMessageType = 'error'; render(); return; }
+      record.key_price = newPrice;
+      const ok = await updateGistData(record);
+      state.adminMessage = ok ? `Price updated to ${numFmt(newPrice)}` : 'Failed to save changes';
+      state.adminMessageType = ok ? 'success' : 'error';
+      await loadAdminData();
+    });
+  }
+
+  const updateKeyPricesForm = document.getElementById('updateKeyPricesForm');
+  if (updateKeyPricesForm) {
+    updateKeyPricesForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(updateKeyPricesForm);
+      const record = await fetchGistData();
+      if (!record) { state.adminMessage = 'Connection failed'; state.adminMessageType = 'error'; render(); return; }
+      const keyPrices = {};
+      Object.keys(durationOptions).forEach(sec => {
+        keyPrices[sec] = Math.max(0, parseFloat(fd.get('price_' + sec) || 0));
+      });
+      record.key_prices = keyPrices;
+      const ok = await updateGistData(record);
+      state.adminMessage = ok ? 'Duration prices updated' : 'Failed to save changes';
+      state.adminMessageType = ok ? 'success' : 'error';
+      await loadAdminData();
+    });
+  }
+
+  const addResellerForm = document.getElementById('addResellerForm');
+  if (addResellerForm) {
+    addResellerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(addResellerForm);
+      const code = (fd.get('code') || '').trim();
+      const balance = parseFloat(fd.get('balance') || 0);
+      if (!code) { state.adminMessage = 'Reseller code required'; state.adminMessageType = 'error'; render(); return; }
+      const record = await fetchGistData();
+      if (!record) { state.adminMessage = 'Connection failed'; state.adminMessageType = 'error'; render(); return; }
+      if (record.resellers[code]) {
+        state.adminMessage = 'Reseller already exists'; state.adminMessageType = 'error'; render(); return;
+      }
+      record.resellers[code] = { balance, total_created: 0, created_at: Math.floor(Date.now() / 1000) };
+      const ok = await updateGistData(record);
+      state.adminMessage = ok ? 'Reseller added: ' + code : 'Failed to save changes';
+      state.adminMessageType = ok ? 'success' : 'error';
+      await loadAdminData();
+    });
+  }
+
+  const chargeForm = document.getElementById('chargeForm');
+  if (chargeForm) {
+    chargeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(chargeForm);
+      const code = (fd.get('code') || '').trim();
+      const amount = parseFloat(fd.get('amount') || 0);
+      if (!code) { state.adminMessage = 'Reseller code required'; state.adminMessageType = 'error'; render(); return; }
+      if (amount <= 0) { state.adminMessage = 'Amount must be greater than 0'; state.adminMessageType = 'error'; render(); return; }
+      const record = await fetchGistData();
+      if (!record) { state.adminMessage = 'Connection failed'; state.adminMessageType = 'error'; render(); return; }
+      if (!record.resellers[code]) { state.adminMessage = 'Reseller not found'; state.adminMessageType = 'error'; render(); return; }
+      record.resellers[code].balance += amount;
+      const ok = await updateGistData(record);
+      state.adminMessage = ok ? 'Balance charged for ' + code : 'Failed to save changes';
+      state.adminMessageType = ok ? 'success' : 'error';
+      await loadAdminData();
+    });
+  }
+
+  // Delete selected resellers
+  const deleteResellersForm = document.getElementById('deleteResellersForm');
+  if (deleteResellersForm) {
+    deleteResellersForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const selected = Array.from(document.querySelectorAll('.reseller-checkbox:checked')).map(cb => cb.value);
+      if (selected.length === 0) { showToast('Select at least one'); return; }
+      if (!confirm(`Delete ${selected.length} selected reseller(s)?`)) return;
+      const record = await fetchGistData();
+      if (!record) { showToast('Connection failed'); return; }
+      let deleted = 0;
+      selected.forEach(code => {
+        if (record.resellers[code]) { delete record.resellers[code]; deleted++; }
+      });
+      if (deleted > 0) {
+        await updateGistData(record);
+        state.resetMessage = `Deleted ${deleted} selected reseller(s)`;
+        state.resetMessageType = 'success';
+      }
+      await loadAdminData();
+    });
+  }
+
+  // ===== Reseller forms =====
+  const createKeyForm = document.getElementById('createKeyForm');
+  if (createKeyForm) {
+    createKeyForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(createKeyForm);
+      const duration = parseInt(fd.get('key_duration') || 3600);
+      const count = Math.max(1, Math.min(50, parseInt(fd.get('keys_count') || 1)));
+      await createKeys(duration, count);
+    });
+  }
+}
+
+// ============================================================
+// ===== Delete single reseller =====
+// ============================================================
+async function deleteReseller(code) {
+  if (!confirm('Delete this reseller?')) return;
+  const record = await fetchGistData();
+  if (!record) { showToast('Connection failed'); return; }
+  if (record.resellers[code]) {
+    delete record.resellers[code];
+    await updateGistData(record);
+  }
+  await loadAdminData();
+}
+
+// ============================================================
+// ===== Key actions =====
+// ============================================================
+async function resetKey(key) {
+  if (!confirm('Reset key ' + key + '?')) return;
+  const code = state.resellerCode;
+  const keyData = await fbGet(KEYS_PATH + '/' + key);
+  if (!keyData || (keyData.ResellerCode || '') !== code) {
+    state.resetMessage = 'This key is not yours';
+    state.resetMessageType = 'error';
+    await loadResellerData();
+    return;
+  }
+  keyData.Devices = { dummy: 0 };
+  keyData.device_ids = [];
+  keyData.device_id = null;
+  keyData.activated_at = 0;
+  keyData.reset = true;
+  keyData.reset_at = Math.floor(Date.now() / 1000);
+  keyData.reset_by = code;
+  const ok = await fbPut(KEYS_PATH + '/' + key, keyData);
+  state.resetMessage = ok ? 'Key reset successfully' : 'Reset failed';
+  state.resetMessageType = ok ? 'success' : 'error';
+  await loadResellerData();
+}
+
+async function deleteKey(key) {
+  if (!confirm('Delete key ' + key + '? This cannot be undone!')) return;
+  const code = state.resellerCode;
+  const keyData = await fbGet(KEYS_PATH + '/' + key);
+  if (!keyData || (keyData.ResellerCode || '') !== code) {
+    state.resetMessage = 'Not yours';
+    state.resetMessageType = 'error';
+    await loadResellerData();
+    return;
+  }
+  const ok = await fbDelete(KEYS_PATH + '/' + key);
+  state.resetMessage = ok ? 'Key deleted' : 'Delete failed';
+  state.resetMessageType = ok ? 'success' : 'error';
+  await loadResellerData();
+}
+
+async function deleteAllKeys() {
+  if (!confirm('DELETE ALL your keys? This cannot be undone!')) return;
+  const code = state.resellerCode;
+  const allKeys = await fbGet(KEYS_PATH);
+  let deleted = 0;
+  if (allKeys && typeof allKeys === 'object') {
+    for (const key of Object.keys(allKeys)) {
+      if ((allKeys[key].ResellerCode || '') === code) {
+        if (await fbDelete(KEYS_PATH + '/' + key)) deleted++;
+      }
+    }
+  }
+  state.resetMessage = `Deleted ${deleted} key(s)`;
+  state.resetMessageType = deleted > 0 ? 'success' : 'error';
+  await loadResellerData();
+}
+
+// ============================================================
+// ===== Create keys =====
+// ============================================================
+async function createKeys(selectedDuration, keysCount) {
+  const code = state.resellerCode;
+  const record = await fetchGistData();
+  if (!record) {
+    state.error = 'Connection to Proxy failed — try again';
+    render();
+    return;
+  }
+  const keyPrices = record.key_prices || {};
+  if (!keyPrices[selectedDuration]) {
+    state.error = 'Invalid duration';
+    render();
+    return;
+  }
+  const pricePerKey = parseFloat(keyPrices[selectedDuration]);
+  const totalPrice = pricePerKey * keysCount;
+  const resellers = record.resellers || {};
+  const currentBalance = resellers[code] ? parseFloat(resellers[code].balance) : 0;
+
+  if (currentBalance < totalPrice) {
+    state.error = `Insufficient balance (need: ${numFmt(totalPrice)} | have: ${numFmt(currentBalance)})`;
+    render();
+    return;
+  }
+
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const newKeys = [];
+  const writeErrors = [];
+  const resellerName = (resellers[code] && (resellers[code].full_name || resellers[code].username)) || code;
+  const now = Math.floor(Date.now() / 1000);
+  let existingKeys = await fbGet(KEYS_PATH);
+  if (!existingKeys || typeof existingKeys !== 'object') existingKeys = {};
+
+  for (let n = 0; n < keysCount; n++) {
+    let key;
+    let attempts = 0;
+    do {
+      key = 'DEVIL';
+      for (let g = 0; g < 3; g++) {
+        key += '-';
+        for (let i = 0; i < 4; i++) key += chars[Math.floor(Math.random() * chars.length)];
+      }
+      attempts++;
+    } while ((existingKeys[key] || newKeys.includes(key)) && attempts < 10);
+
+    const keyData = {
+      device_id: null, device_ids: [], max_devices: 1,
+      activated_at: 0, active: true, expiry: selectedDuration,
+      created_by: code, created_at: now, Banned: false,
+      DeviceLimit: 1, Devices: { dummy: 0 },
+      ExpiryDate: new Date((now + selectedDuration) * 1000).toISOString().slice(0, 10),
+      Username: resellerName, ResellerCode: code,
+    };
+    const ok = await fbPut(KEYS_PATH + '/' + key, keyData);
+    if (ok) { newKeys.push(key); existingKeys[key] = true; }
+    else writeErrors.push(key);
+  }
+
+  if (newKeys.length === 0) {
+    state.error = 'Failed to write keys — check proxy permissions';
+    render();
+    return;
+  }
+
+  if (!resellers[code]) {
+    resellers[code] = { balance: currentBalance, total_created: 0, created_at: now };
+  }
+  const chargedAmount = pricePerKey * newKeys.length;
+  resellers[code].balance = currentBalance - chargedAmount;
+  resellers[code].total_created = (resellers[code].total_created || 0) + newKeys.length;
+  record.resellers = resellers;
+
+  const saved = await updateGistData(record);
+  if (saved) {
+    state.balance = resellers[code].balance;
+    state.totalCreated = resellers[code].total_created;
+    state.keyCreated = true;
+    state.newKeysList = newKeys;
+    state.error = writeErrors.length > 0 ? `${newKeys.length} key(s) created, ${writeErrors.length} failed` : null;
+  } else {
+    state.error = 'Keys created but balance charge failed — contact admin';
+  }
+  await loadResellerData();
+}
+
+// ============================================================
+// ===== Data loaders =====
+// ============================================================
+async function loadAdminData() {
+  const record = await fetchGistData();
+  if (!record) {
+    state.adminMessage = 'Connection failed';
+    state.adminMessageType = 'error';
+    render();
+    return;
+  }
+  state.record = record;
+  render();
+  // clear message after render (so it shows once)
+  setTimeout(() => {
+    state.adminMessage = null;
+    state.resetMessage = null;
+  }, 100);
+}
+
+async function loadResellerData() {
+  const record = await fetchGistData();
+  if (!record) {
+    state.error = 'Connection failed';
+    render();
+    return;
+  }
+  state.record = record;
+  const code = state.resellerCode;
+  const resellers = record.resellers || {};
+  if (resellers[code]) {
+    state.balance = parseFloat(resellers[code].balance || 0);
+    state.totalCreated = parseInt(resellers[code].total_created || 0);
+  }
+  // Load my keys
+  const allKeys = await fbGet(KEYS_PATH);
+  const myKeys = {};
+  if (allKeys && typeof allKeys === 'object') {
+    for (const key of Object.keys(allKeys)) {
+      const data = allKeys[key];
+      if (data && typeof data === 'object' && (data.ResellerCode || '') === code) {
+        myKeys[key] = data;
+      }
+    }
+  }
+  // Sort by created_at desc
+  const sorted = {};
+  Object.keys(myKeys)
+    .sort((a, b) => {
+      const ta = myKeys[a].created_at || myKeys[a].reset_at || 0;
+      const tb = myKeys[b].created_at || myKeys[b].reset_at || 0;
+      return tb - ta;
+    })
+    .forEach(k => { sorted[k] = myKeys[k]; });
+  state.myKeys = sorted;
+  render();
+  // clear messages after render
+  setTimeout(() => {
+    state.resetMessage = null;
+    state.error = null;
+    state.keyCreated = false;
+    state.newKeysList = [];
+  }, 100);
+}
+
+// ============================================================
+// ===== Init =====
+// ============================================================
+async function init() {
+  loadSession();
+  if (state.isAdmin) {
+    document.getElementById('app').innerHTML = renderLoading();
+    await loadAdminData();
+  } else if (state.isReseller) {
+    document.getElementById('app').innerHTML = renderLoading();
+    await loadResellerData();
+  } else {
+    render();
+  }
+}
+
+// Expose functions to global (for onclick handlers in HTML)
+window.toggleCard = toggleCard;
+window.toggleSelectAllResellers = toggleSelectAllResellers;
+window.copyKey = copyKey;
+window.resetKey = resetKey;
+window.deleteKey = deleteKey;
+window.deleteAllKeys = deleteAllKeys;
+window.deleteReseller = deleteReseller;
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
